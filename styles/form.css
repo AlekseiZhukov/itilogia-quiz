@@ -13,15 +13,6 @@
     max-width: 508px;
 }
 
-.form-title {
-    font-family: "MuseoSansCyrl-bold", sans-serif;
-    font-size: 48px;
-}
-
-.form-title span {
-    color: #6933DC;
-}
-
 .form-details {
     margin-top: 60px;
     max-width: 485px;
@@ -52,6 +43,7 @@
     width: 485px;
     height: 74px;
     position: relative;
+    transition: .2s ease all;
 }
 
 .form-input {
@@ -77,4 +69,14 @@
 .form-input:not(:focus):valid ~ .form-label
 {
     top: 12px;
+}
+
+.form-input:valid,
+.form-input:focus {
+    margin-top: 27px;
+    height: auto;
+}
+
+.form-group:focus-within {
+    border-left: 5px solid #6933DC;
 }

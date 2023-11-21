@@ -18,7 +18,7 @@ a {
 }
 @font-face {
     font-family: "MuseoSansCyrl-bold";
-    src: url("../fonts/MuseoSansCyrl-700.ttf");
+    src: url("../fonts/MuseoSansCyrl700.ttf");
 }
 
 .header {
@@ -45,9 +45,38 @@ a {
     background: #28037c;
 }
 
+
 .footer {
     text-align: center;
     padding: 40px 0;
     color: #DCDCF3;
     font-size: 13px;
+}
+.common-title {
+    font-family: "MuseoSansCyrl-bold", sans-serif;
+    font-size: 48px;
+}
+.common-title span {
+    color: #6933DC;
+}
+
+.btn-transparent {
+    background: transparent;
+    color: #6933DC;
+    border-radius: 6px;
+    border: 1px solid #6933DC;
+}
+
+.btn-transparent:hover {
+    background: #6933DC;
+    color: #fff;
+
+}
+.big-title {
+    font-family: "MuseoSansCyrl-bold", sans-serif;
+    font-size: 54px;
+}
+
+.big-title span {
+    color: #6933DC;
 }
