@@ -40,9 +40,22 @@ a {
     border: 0;
     cursor: pointer;
     transition: .4s;
+    text-decoration: none;
+}
+
+
+
+
+a.btn {
+    display: inline-block;
 }
 .btn:hover {
     background: #28037c;
+}
+
+.btn:disabled {
+    background-color: #e2dfe7;
+    cursor: not-allowed;
 }
 
 
@@ -72,6 +85,15 @@ a {
     color: #fff;
 
 }
+
+.btn-transparent:disabled {
+    background: transparent;
+    color: #e2dfe7;
+    border-radius: 6px;
+    border: 1px solid #e2dfe7;
+    cursor: not-allowed;
+}
+
 .big-title {
     font-family: "MuseoSansCyrl-bold", sans-serif;
     font-size: 54px;
