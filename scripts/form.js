@@ -69,13 +69,19 @@
         },
 
         processForm () {
-            console.log('processForm()')
             if (this.validateForm()) {
-                let paramString = '';
+                const userData = {}
+                //let paramString = '';
                 this.fields.forEach( item => {
-                    paramString += (!paramString ? '?' : '&') + item.name + '=' + item.element.value
+                    //paramString += (!paramString ? '?' : '&') + item.name + '=' + item.element.value
+                    userData[item.name] = item.element.value
                 })
-                location.href = 'choice.html' + paramString;
+
+                //location.href = 'choice.html' + paramString;
+                sessionStorage.clear();
+                sessionStorage.setItem('userData', JSON.stringify(userData))
+                location.href = 'choice.html';
+                console.log(sessionStorage)
             }
         }
     }

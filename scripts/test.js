@@ -10,13 +10,15 @@
         progressBar: null,
         currentQuestionIndex: 1,
         userResult: [],
+        testId: null,
         init() {
             checkUserData();
-            const url = new URL(location.href);
-            const testId = url.searchParams.get('id');
-            if (testId) {
+
+            this.testId = +sessionStorage.getItem('chooseQuizId');
+
+            if (this.testId) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://testologia.site/get-quiz?id=' + testId, false);
+                xhr.open('GET', 'https://testologia.site/get-quiz?id=' + this.testId, false);
                 xhr.send();
 
                 if (xhr.status === 200 && xhr.responseText) {
@@ -97,7 +99,7 @@
             const chosenOption = this.userResult.find(item => item.questionId === activeQuestion.id);
             activeQuestion.answers.forEach(answer => {
                 const optionElement = document.createElement('div');
-                optionElement.className = 'test-question-option';
+                optionElement.className = 'common-question-option';
 
                 const inputId = `answer-${answer.id}`;
                 const inputElement = document.createElement('input');
@@ -125,8 +127,13 @@
             });
             if (chosenOption && chosenOption.chosenAnswerId) {
                 this.nextButtonElement.removeAttribute('disabled');
+                this.passButtonElement.className = 'disabled';
+                this.passButtonElement.firstElementChild.setAttribute('src', 'images/small-gray-arrow.png')
+
             } else {
                 this.nextButtonElement.setAttribute('disabled', 'disabled');
+                this.passButtonElement.className = '';
+                this.passButtonElement.firstElementChild.setAttribute('src', 'images/small-arrow.png')
             }
 
             if (this.currentQuestionIndex === this.quiz.questions.length) {
@@ -145,6 +152,8 @@
 
         chooseAnswer() {
             this.nextButtonElement.removeAttribute('disabled');
+            this.passButtonElement.className = 'disabled';
+            this.passButtonElement.firstElementChild.setAttribute('src', 'images/small-gray-arrow.png')
         },
 
         move(action) {
@@ -194,36 +203,42 @@
         },
 
         complete () {
-            const url = new URL(location.href);
-            const id = url.searchParams.get('id');
-            const name = url.searchParams.get('name');
-            const lastName = url.searchParams.get('lastName');
-            const email = url.searchParams.get('email');
+            const userData = JSON.parse(sessionStorage.getItem('userData'));
+            sessionStorage.setItem('userResult', JSON.stringify(this.userResult));
+            sessionStorage.setItem('quiz', JSON.stringify(this.quiz))
+            if (userData) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://testologia.site/pass-quiz?id=' + this.testId, false );
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                xhr.send(JSON.stringify({
+                    name: userData.name,
+                    lastName: userData.lastName,
+                    email: userData.email,
+                    results: this.userResult
+                }));
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://testologia.site/pass-quiz?id=' + id, false );
-            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-            xhr.send(JSON.stringify({
-                name: name,
-                lastName: lastName,
-                email: email,
-                results: this.userResult
-            }));
+                if (xhr.status === 200 && xhr.responseText) {
+                    let result = null;
+                    try {
+                        result = JSON.parse(xhr.responseText);
+                    } catch (e) {
+                        location.href = 'index.html';
+                    }
+                    if (result) {
+                        sessionStorage.setItem('result', JSON.stringify({
+                            score:result.score,
+                            total:result.total
+                        }));
+                        location.href = 'result.html';
+                    }
 
-            if (xhr.status === 200 && xhr.responseText) {
-                let result = null;
-                try {
-                    result = JSON.parse(xhr.responseText);
-                } catch (e) {
+                } else {
                     location.href = 'index.html';
                 }
-                if (result) {
-                    location.href = 'result.html?score=' + result.score + '&total=' + result.total;
-                }
-
-            } else {
-                location.href = 'index.html';
             }
+
+
+
         }
     }
 
