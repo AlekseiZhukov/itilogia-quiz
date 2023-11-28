@@ -47,6 +47,9 @@
     border-radius: 50%;
     background: transparent;
     left: -33px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-sizing: border-box;
 }
 
 .right.right-answers-block-option {
@@ -56,13 +59,13 @@
     color: #DC3333;
 }
 .right.right-answers-block-option:before {
-    border: 3px solid #5FDC33;
-    box-shadow: inset 0 0 0 5px #5FDC33;
+    border: 6px solid #5FDC33;
+
 }
 
 .wrong.right-answers-block-option:before {
-    border: 3px solid #DC3333;
-    box-shadow: inset 0 0 0 5px #DC3333;
+    border: 6px solid #DC3333;
+
 }
 
 

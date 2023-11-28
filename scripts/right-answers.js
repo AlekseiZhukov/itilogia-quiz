@@ -1,13 +1,13 @@
 (function () {
 
     const RightAnswers = {
-        userDara: null,
+        userData: null,
         rightAnswers: null,
         quiz: null,
         userResult: null,
         init () {
 
-            this.userDara = checkUserData();
+            this.userData = checkUserData();
             const testId = +sessionStorage.getItem('chooseQuizId');
             this.userResult = JSON.parse(sessionStorage.getItem('userResult'));
             if (testId) {
@@ -34,8 +34,8 @@
                         location.href = 'index.html';
                     }
                     document.getElementById('right-answers-pre-title').innerText = `${this.quiz.name}`;
-                    if (this.userDara) {
-                        document.getElementById('author').innerHTML = `Тест выполнил <span>${this.userDara.name} ${this.userDara.lastName}, ${this.userDara.email}</span>`
+                    if (this.userData) {
+                        document.getElementById('author').innerHTML = `Тест выполнил <span>${this.userData.name} ${this.userData.lastName}, ${this.userData.email}</span>`
                     }
                     if (this.userResult) {
                         this.showAnswers();
@@ -66,8 +66,8 @@
                 rightAnswersBlockOptions.className = 'common-question-options';
                 rightAnswersBlockOptions.classList.add('right-answers-block-options');
 
-                let rightAnswerNumber = this.rightAnswers.filter( (itemAnswer, indexAnswer) => indexAnswer === index)[0];
-                let userAnswerNumber = this.userResult.filter( userAnswer => userAnswer.questionId === item.id)[0];
+                let rightAnswerNumber = this.rightAnswers.find( (itemAnswer, indexAnswer) => indexAnswer === index);
+                let userAnswerNumber = this.userResult.find( userAnswer => userAnswer.questionId === item.id);
 
                 item.answers.forEach( answer => {
                     const answerElement = document.createElement('div');
@@ -87,9 +87,7 @@
                 answersElement.appendChild(rightAnswersBlock);
             })
 
-
         }
-
 
     }
 
