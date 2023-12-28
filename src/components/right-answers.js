@@ -1,54 +1,55 @@
-(function () {
+import {UserDataFromSessionStorage} from "../utils/userDataFromSessionStorage.js";
 
-    const RightAnswers = {
-        userData: null,
-        rightAnswers: null,
-        quiz: null,
-        userResult: null,
-        init () {
+export class RightAnswers  {
 
-            this.userData = checkUserData();
-            const testId = +sessionStorage.getItem('chooseQuizId');
-            this.userResult = JSON.parse(sessionStorage.getItem('userResult'));
-            if (testId) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://testologia.site/get-quiz-right?id=' + testId, false);
-                xhr.send();
+    constructor() {
+        this.userData = null;
+        this.rightAnswers = null;
+        this.quiz = null;
+        this.userResult = null;
 
-                if (xhr.status === 200 && xhr.responseText) {
-                    try {
-                        this.rightAnswers = JSON.parse(xhr.responseText);
-                    } catch (e) {
-                        location.href = 'index.html';
-                    }
-                } else {
-                    location.href = 'index.html';
+debugger
+        this.userData = UserDataFromSessionStorage.checkUserData();
+        const testId = +sessionStorage.getItem('chooseQuizId');
+        this.userResult = JSON.parse(sessionStorage.getItem('userResult'));
+        if (testId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://testologia.site/get-quiz-right?id=' + testId, false);
+            xhr.send();
+
+            if (xhr.status === 200 && xhr.responseText) {
+                try {
+                    this.rightAnswers = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    location.href = '#/';
                 }
-
-                xhr.open('GET', 'https://testologia.site/get-quiz?id=' + testId, false);
-                xhr.send();
-                if (xhr.status === 200 && xhr.responseText) {
-                    try {
-                        this.quiz = JSON.parse(xhr.responseText);
-                    } catch (e) {
-                        location.href = 'index.html';
-                    }
-                    document.getElementById('right-answers-pre-title').innerText = `${this.quiz.name}`;
-                    if (this.userData) {
-                        document.getElementById('author').innerHTML = `Тест выполнил <span>${this.userData.name} ${this.userData.lastName}, ${this.userData.email}</span>`
-                    }
-                    if (this.userResult) {
-                        this.showAnswers();
-                    } else {
-                        location.href = 'index.html';
-                    }
-
-                } else {
-                    location.href = 'index.html';
-                }
+            } else {
+                location.href = '#/';
             }
 
-        },
+            xhr.open('GET', 'https://testologia.site/get-quiz?id=' + testId, false);
+            xhr.send();
+            if (xhr.status === 200 && xhr.responseText) {
+                try {
+                    this.quiz = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    location.href = '#/';
+                }
+                document.getElementById('right-answers-pre-title').innerText = `${this.quiz.name}`;
+                if (this.userData) {
+                    document.getElementById('author').innerHTML = `Тест выполнил <span>${this.userData.name} ${this.userData.lastName}, ${this.userData.email}</span>`
+                }
+                if (this.userResult) {
+                    this.showAnswers();
+                } else {
+                    location.href = '#/';
+                }
+
+            } else {
+                location.href = '#/';
+            }
+        }
+    }
 
         showAnswers () {
             const answersElement = document.getElementById('answers');
@@ -90,8 +91,3 @@
         }
 
     }
-
-    RightAnswers.init()
-
-
-})()
